@@ -16,6 +16,16 @@ import (
 )
 
 func main() {
+	host, err := libp2p.New()
+	if err != nil {
+		panic(err)
+	}
+
+	for _, addr := range host.Addrs() {
+		fmt.Printf("Listening on %s/p2p/%s\n", addr, host.ID())
+
+	}
+
 	//Get ID from command line flags
 	dest := flag.String("dest", "", "target peer to dial")
 	flag.Parse()
@@ -29,10 +39,6 @@ func main() {
 		panic(err)
 	}
 
-	host, err := libp2p.New()
-	if err != nil {
-		panic(err)
-	}
 	fmt.Println("Hello World, my hosts ID is ", host.ID())
 	err = host.Connect(context.Background(), *pi)
 	if err != nil {
